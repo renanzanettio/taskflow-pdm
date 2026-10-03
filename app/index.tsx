@@ -1,58 +1,49 @@
 import { Image, Pressable, Text, View, Button } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from './styles';
+import { styles } from '@/styles/global';
+import { router } from 'expo-router';
+import Botao from '@/components/Botao';
+import Titulo from '@/components/Titulo';
+import Card from '@/components/Card';
 
 export default function Home() {
-    const [contador, setContador] = useState(0)
     const [iniciado, setIniciado] = useState(false)
 
-    useEffect(() => {
-        console.log("Contador alterado:", contador);
-    }, [contador]);
-    
-    useEffect(() => {
-        setTimeout(()=>{
-            setIniciado(true)
-        },2000);
-    }, []);
-
-
-    function incrementar() {
-        setContador(contador + 1)
+    function iniciarAplicacao() {
+        setIniciado(true);
+        router.push("/tarefas/tarefas");
     }
-
-    function decrementar() {
-        if (contador > 0) {
-            setContador(contador - 1)
-        }
-    }
-
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
-
-                {iniciado ? (
-                    <View style={styles.card}>
-                    <Text>CONTADOR</Text>
-                    <Text style={{ fontSize: 25 }}>{contador}</Text>
-
-                    <Button
-                        title='+'
-                        onPress={incrementar}
+                <Card>
+                    <Image
+                        source={require("../assets/images/logo.png")}
+                        style={styles.logo}
+                        resizeMode='contain'
                     />
-                    <Button
-                        title='----'
-                        onPress={decrementar}
+                    
+                    <Titulo texto='TaskFlow'/>
+
+                    {iniciado ? (
+                        <Text style={styles.descricao}>
+                            Bem vindo as TaskFlow!
+                        </Text>
+                    ) : (
+                        <Text style={styles.descricao}>
+                            Organize sua tarefas de forma simples
+                        </Text>
+                    )}
+                    
+
+                    <Botao
+                        texto={iniciado ? "Continuar" : "Começar"}
+                        onPress={iniciarAplicacao}
                     />
-                </View>
-                ) : (
-                    <View style={styles.card}>
-                    <Text>Carregando Dados</Text>
-            
-                </View>
-                )}
-                
+                    
+
+                </Card>
             </View>
         </SafeAreaView>
     );
